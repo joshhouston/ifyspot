@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
+import ColorThief from 'colorthief';
 
+const Thief = new ColorThief();
 const spotifyWebApi = new Spotify();
 
 class App extends Component {
@@ -13,7 +15,8 @@ class App extends Component {
       nowPlaying: {
         name: 'Not Checked',
         image: ''
-      }
+      },
+      savedTracks: []
     }
     if(params.access_token){
       spotifyWebApi.setAccessToken(params.access_token)
@@ -33,6 +36,7 @@ class App extends Component {
   getNowPlaying(){
     spotifyWebApi.getMyCurrentPlaybackState()
       .then((response) => {
+        console.log(response)
         this.setState({
           nowPlaying: {
             name: response.item.name,
@@ -41,6 +45,35 @@ class App extends Component {
         })
       })
   }
+
+  playTrack(){
+    spotifyWebApi.play()
+      .then((response) => {
+        console.log(response)
+      })
+  }
+
+  pauseTrack(){
+    spotifyWebApi.pause()
+  }
+
+  getTopArtists(){
+    spotifyWebApi.skipToNext()
+      .then((response) => {
+        console.log(response)
+      })
+  }
+
+  getSavedTracks(){
+    spotifyWebApi.getMySavedTracks()
+      .then((response) => {
+        console.log(response.items)
+        this.setState({
+          savedTracks: response.items
+        })
+      })
+  }
+
   render(){
     return (
       <div className="App">
@@ -55,6 +88,21 @@ class App extends Component {
         <button onClick={() => this.getNowPlaying()}>
           Check Now Playing
         </button>
+        <button onClick={() => this.playTrack()} >Play</button>
+        <button onClick={() => this.pauseTrack()} > Pause</button>
+        <button onClick={() => this.getTopArtists()} > Next</button>
+        <button onClick={() => this.getSavedTracks()} > Tracks</button>
+
+        <div className="savedTracks">
+          {this.state.savedTracks.map((track, index) => {
+            return (
+              // style={{writingMode: "vertical-rl", width: 500}}
+              <div key={index}  >
+                <h3>{track.track.name}</h3>
+              </div>
+            )
+          })}
+        </div>
       </div>
     );
   }
