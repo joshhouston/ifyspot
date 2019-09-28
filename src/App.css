@@ -1,4 +1,6 @@
 .App {
+  height: 100%;
+  width: 100%;
   text-align: center;
 }
 
@@ -21,6 +23,3 @@
   color: #09d3ac;
 }
 
-div, button {
-  margin: 15px;
-}

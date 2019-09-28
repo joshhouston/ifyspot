@@ -1,24 +1,30 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
 import ColorThief from 'colorthief';
+import dweeb from './dweeb.jpg'
+import props from './props.png'
 
 const Thief = new ColorThief();
 const spotifyWebApi = new Spotify();
 
 class App extends Component {
-  constructor(){
+  constructor() {
     super();
+    this.imgRef = React.createRef();
     const params = this.getHashParams();
-    this.state ={
+    this.state = {
       loggedIn: params.access_token ? true : false,
       nowPlaying: {
         name: 'Not Checked',
         image: ''
       },
-      savedTracks: []
+      savedTracks: [],
+      r: '',
+      g: '',
+      b: ''
     }
-    if(params.access_token){
+    if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token)
     }
   }
@@ -26,14 +32,14 @@ class App extends Component {
   getHashParams() {
     var hashParams = {};
     var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    while ( e = r.exec(q)) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
+      q = window.location.hash.substring(1);
+    while (e = r.exec(q)) {
+      hashParams[e[1]] = decodeURIComponent(e[2]);
     }
     return hashParams;
   }
 
-  getNowPlaying(){
+  getNowPlaying() {
     spotifyWebApi.getMyCurrentPlaybackState()
       .then((response) => {
         console.log(response)
@@ -44,27 +50,23 @@ class App extends Component {
           }
         })
       })
+
+    console.log(this.state.nowPlaying.image)
   }
 
-  playTrack(){
+  playTrack() {
     spotifyWebApi.play()
       .then((response) => {
         console.log(response)
       })
   }
 
-  pauseTrack(){
+  pauseTrack() {
     spotifyWebApi.pause()
   }
 
-  getTopArtists(){
-    spotifyWebApi.skipToNext()
-      .then((response) => {
-        console.log(response)
-      })
-  }
 
-  getSavedTracks(){
+  getSavedTracks() {
     spotifyWebApi.getMySavedTracks()
       .then((response) => {
         console.log(response.items)
@@ -74,16 +76,17 @@ class App extends Component {
       })
   }
 
-  render(){
+
+  render() {
     return (
-      <div className="App">
+      <div className="App" style={{backgroundColor: `rgb(${this.state.r}, ${this.state.g}, ${this.state.b})`}}>
         <a href="http://localhost:8888">
           <button>Login With Spotify</button>
         </a>
 
         <div>Now Playing: {this.state.nowPlaying.name}</div>
         <div>
-          <img src={this.state.nowPlaying.image} style={{width: 100}}/>
+          <img src={this.state.nowPlaying.image} style={{ width: 100 }} />
         </div>
         <button onClick={() => this.getNowPlaying()}>
           Check Now Playing
@@ -92,6 +95,22 @@ class App extends Component {
         <button onClick={() => this.pauseTrack()} > Pause</button>
         <button onClick={() => this.getTopArtists()} > Next</button>
         <button onClick={() => this.getSavedTracks()} > Tracks</button>
+        {/* <button onClick={() => this.colorMe()} > Color</button> */}
+
+        <img
+            crossOrigin={"anonymous"}
+            ref={this.imgRef}
+            src={this.state.nowPlaying.image}
+            alt={"example"}
+            className={"example__img"}
+            onLoad={() => {
+              const colorThief = new ColorThief();
+              const img = this.imgRef.current;
+              const result = colorThief.getColor(img, 25);
+              this.setState({r: result[0], g: result[1], b: result[2]})
+              // this.setState({color: result})
+            }}
+          />
 
         <div className="savedTracks">
           {this.state.savedTracks.map((track, index) => {
