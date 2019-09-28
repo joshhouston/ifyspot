@@ -20,9 +20,26 @@ class App extends Component {
         image: ''
       },
       savedTracks: [],
-      r: '',
-      g: '',
-      b: ''
+      primary: {
+        r: '',
+        g: '',
+        b: ''
+      },
+      secondary: {
+        r: '',
+        g: '',
+        b: ''
+      },
+      tertiary: {
+        r: '',
+        g: '',
+        b: ''
+      },
+      quaternary: {
+        r: '',
+        g: '',
+        b: ''
+      }
     }
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token)
@@ -42,7 +59,6 @@ class App extends Component {
   getNowPlaying() {
     spotifyWebApi.getMyCurrentPlaybackState()
       .then((response) => {
-        console.log(response)
         this.setState({
           nowPlaying: {
             name: response.item.name,
@@ -51,7 +67,6 @@ class App extends Component {
         })
       })
 
-    console.log(this.state.nowPlaying.image)
   }
 
   playTrack() {
@@ -79,7 +94,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App" style={{backgroundColor: `rgb(${this.state.r}, ${this.state.g}, ${this.state.b})`}}>
+      <div className="App" style={{backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})`}}>
         <a href="http://localhost:8888">
           <button>Login With Spotif</button>
         </a>
@@ -88,13 +103,13 @@ class App extends Component {
         <div>
           <img src={this.state.nowPlaying.image} style={{ width: 100 }} />
         </div>
-        <button onClick={() => this.getNowPlaying()}>
+        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()} onClick={() => this.getNowPlaying()}>
           Check Now Playing
         </button>
-        <button onClick={() => this.playTrack()} >Play</button>
-        <button onClick={() => this.pauseTrack()} > Pause</button>
-        <button onClick={() => this.getTopArtists()} > Next</button>
-        <button onClick={() => this.getSavedTracks()} > Tracks</button>
+        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`, color: `rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b}`}} onClick={() => this.playTrack()} >Play</button>
+        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()}  onClick={() => this.pauseTrack()} > Pause</button>
+        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()}  onClick={() => this.getTopArtists()} > Next</button>
+        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()}  onClick={() => this.getSavedTracks()} > Tracks</button>
         {/* <button onClick={() => this.colorMe()} > Color</button> */}
 
         <img
@@ -106,9 +121,35 @@ class App extends Component {
             onLoad={() => {
               const colorThief = new ColorThief();
               const img = this.imgRef.current;
-              const result = colorThief.getColor(img, 25);
-              this.setState({r: result[0], g: result[1], b: result[2]})
-              // this.setState({color: result})
+              const result = colorThief.getPalette(img, 25);
+              const result2 = colorThief.getColor(img, 25)
+
+              console.log(result[0], result2)
+              this.setState({
+                primary: {
+                  r: result2[0],
+                  g: result2[1],
+                  b: result2[2]
+                },
+
+                secondary: {
+                  r: result[1][0],
+                  g: result[1][1],
+                  b: result[1][2]
+                },
+
+                tertiary: {
+                  r: result[2][0],
+                  g: result[2][1],
+                  b: result[2][2]
+                },
+                quaternary: {
+                  r: result[3][0],
+                  g: result[3][1],
+                  b: result[3][2]
+                }
+              })
+              // this.setState({r: result2[0], g: result2[1], b: result2[2]})
             }}
           />
 
