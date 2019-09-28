@@ -81,7 +81,7 @@ class App extends Component {
     return (
       <div className="App" style={{backgroundColor: `rgb(${this.state.r}, ${this.state.g}, ${this.state.b})`}}>
         <a href="http://localhost:8888">
-          <button>Login With Spotify</button>
+          <button>Login With Spotif</button>
         </a>
 
         <div>Now Playing: {this.state.nowPlaying.name}</div>
