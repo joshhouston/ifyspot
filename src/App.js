@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
 import ColorThief from 'colorthief';
-import dweeb from './dweeb.jpg'
-import props from './props.png'
+import { Palette } from 'react-palette';
 
 const Thief = new ColorThief();
 const spotifyWebApi = new Spotify();
+
 
 class App extends Component {
   constructor() {
@@ -39,7 +39,8 @@ class App extends Component {
         r: '',
         g: '',
         b: ''
-      }
+      },
+
     }
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token)
@@ -54,6 +55,10 @@ class App extends Component {
       hashParams[e[1]] = decodeURIComponent(e[2]);
     }
     return hashParams;
+  }
+
+  getVibe(){
+    
   }
 
   getNowPlaying() {
@@ -103,7 +108,7 @@ class App extends Component {
         <div>
           <img src={this.state.nowPlaying.image} style={{ width: 100 }} />
         </div>
-        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()} onClick={() => this.getNowPlaying()}>
+        <button style={{backgroundColor: `rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`}} onClick={() => this.playTrack()} onClick={() => this.getNowPlaying()}>
           Check Now Playing
         </button>
         <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`, color: `rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b}`}} onClick={() => this.playTrack()} >Play</button>
@@ -144,14 +149,25 @@ class App extends Component {
                   b: result[2][2]
                 },
                 quaternary: {
-                  r: result[3][0],
-                  g: result[3][1],
-                  b: result[3][2]
+                  r: result[0][0],
+                  g: result[0][1],
+                  b: result[0][2]
                 }
               })
               // this.setState({r: result2[0], g: result2[1], b: result2[2]})
             }}
           />
+
+      <Palette src={this.state.nowPlaying.image}>
+        {({ data, loading, error }) => (
+
+          <div style={{ backgroundColor: data.vibrant }}>
+            {console.log(data)}
+            Text with the vibrant color
+          </div>
+        )}
+      </Palette>
+
 
         <div className="savedTracks">
           {this.state.savedTracks.map((track, index) => {
