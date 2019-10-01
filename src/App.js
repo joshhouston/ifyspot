@@ -3,6 +3,8 @@ import './App.css';
 import Spotify from 'spotify-web-api-js';
 import ColorThief from 'colorthief';
 import { Palette } from 'react-palette';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPlay, faBackward, faForward} from '@fortawesome/free-solid-svg-icons';
 
 const Thief = new ColorThief();
 const spotifyWebApi = new Spotify();
@@ -57,11 +59,14 @@ class App extends Component {
     return hashParams;
   }
 
-  getVibe(){
-    
-  }
+  // componentDidUpdate(prevState){
+  //   if(prevState.nowPlaying.name !== this.state.nowPlaying.name){
+  //     console.log('hello')
+  //   }
+  // }
 
-  getNowPlaying() {
+
+  componentDidMount() {
     spotifyWebApi.getMyCurrentPlaybackState()
       .then((response) => {
         this.setState({
@@ -76,13 +81,18 @@ class App extends Component {
 
   playTrack() {
     spotifyWebApi.play()
-      .then((response) => {
-        console.log(response)
-      })
   }
 
   pauseTrack() {
     spotifyWebApi.pause()
+  }
+
+  nextTrack() {
+    spotifyWebApi.skipToNext()
+  }
+
+  previousTrack() {
+    spotifyWebApi.skipToPrevious()
   }
 
 
@@ -105,17 +115,8 @@ class App extends Component {
         </a>
 
         <div>Now Playing: {this.state.nowPlaying.name}</div>
-        <div>
-          <img src={this.state.nowPlaying.image} style={{ width: 100 }} />
-        </div>
-        <button style={{backgroundColor: `rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`}} onClick={() => this.playTrack()} onClick={() => this.getNowPlaying()}>
-          Check Now Playing
-        </button>
-        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`, color: `rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b}`}} onClick={() => this.playTrack()} >Play</button>
-        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()}  onClick={() => this.pauseTrack()} > Pause</button>
-        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()}  onClick={() => this.getTopArtists()} > Next</button>
-        <button style={{backgroundColor: `rgb(${this.state.secondary.r}, ${this.state.secondary.g}, ${this.state.secondary.b})`}} onClick={() => this.playTrack()}  onClick={() => this.getSavedTracks()} > Tracks</button>
-        {/* <button onClick={() => this.colorMe()} > Color</button> */}
+
+        
 
         <img
             crossOrigin={"anonymous"}
@@ -160,11 +161,29 @@ class App extends Component {
 
       <Palette src={this.state.nowPlaying.image}>
         {({ data, loading, error }) => (
+          
+            <div className='controls'>
+              <FontAwesomeIcon
+                style={{ color: data.vibrant }}
+                size='4x'
+                icon={faBackward}
+                onClick={() => this.previousTrack()}
+                />
 
-          <div style={{ backgroundColor: data.vibrant }}>
-            {console.log(data)}
-            Text with the vibrant color
-          </div>
+              <FontAwesomeIcon
+                style={{ color: data.vibrant }}
+                size='4x'
+                icon={faPlay} 
+                onClick={() => this.playTrack()} 
+                />
+
+              <FontAwesomeIcon
+                style={{ color: data.vibrant }}
+                size='4x'
+                icon={faForward} 
+                onClick={() => this.nextTrack()}
+                />
+            </div>
         )}
       </Palette>
 
