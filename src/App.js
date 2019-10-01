@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
 import ColorThief from 'colorthief';
+import cassette from './cassette.png'
 import { Palette } from 'react-palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {faPlay, faBackward, faForward} from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
 
 const Thief = new ColorThief();
 const spotifyWebApi = new Spotify();
@@ -19,7 +20,8 @@ class App extends Component {
       loggedIn: params.access_token ? true : false,
       nowPlaying: {
         name: 'Not Checked',
-        image: ''
+        image: '',
+        isPlaying: false
       },
       savedTracks: [],
       primary: {
@@ -59,11 +61,7 @@ class App extends Component {
     return hashParams;
   }
 
-  // componentDidUpdate(prevState){
-  //   if(prevState.nowPlaying.name !== this.state.nowPlaying.name){
-  //     console.log('hello')
-  //   }
-  // }
+
 
 
   componentDidMount() {
@@ -72,11 +70,26 @@ class App extends Component {
         this.setState({
           nowPlaying: {
             name: response.item.name,
-            image: response.item.album.images[0].url
+            image: response.item.album.images[0].url,
+            isPlaying: true
           }
         })
       })
+  }
 
+  componentDidUpdate(prevProps, prevState){
+    if(this.state.nowPlaying !== prevState.nowPlaying){
+      spotifyWebApi.getMyCurrentPlayingTrack()
+      .then((response) => {
+        this.setState({
+          nowPlaying: {
+            name: response.item.name,
+            image: response.item.album.images[0].url
+          }
+        })
+
+      })
+    }
   }
 
   playTrack() {
@@ -85,6 +98,9 @@ class App extends Component {
 
   pauseTrack() {
     spotifyWebApi.pause()
+    this.setState({nowPlaying: {
+      isPlaying: false
+    }})
   }
 
   nextTrack() {
@@ -109,83 +125,100 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App" style={{backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})`}}>
+      <div className="App" style={{ backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})` }}>
         <a href="http://localhost:8888">
           <button>Login With Spotif</button>
         </a>
 
         <div>Now Playing: {this.state.nowPlaying.name}</div>
 
-        
 
-        <img
-            crossOrigin={"anonymous"}
-            ref={this.imgRef}
-            src={this.state.nowPlaying.image}
-            alt={"example"}
-            className={"example__img"}
-            onLoad={() => {
-              const colorThief = new ColorThief();
-              const img = this.imgRef.current;
-              const result = colorThief.getPalette(img, 25);
-              const result2 = colorThief.getColor(img, 25)
+        <div className="artwork">
 
-              console.log(result[0], result2)
-              this.setState({
-                primary: {
-                  r: result2[0],
-                  g: result2[1],
-                  b: result2[2]
-                },
+          <div className="cassette">
 
-                secondary: {
-                  r: result[1][0],
-                  g: result[1][1],
-                  b: result[1][2]
-                },
+            <img
+              crossOrigin={"anonymous"}
+              ref={this.imgRef}
+              src={this.state.nowPlaying.image}
+              alt={"example"}
+              className={"example__img"}
+              onLoad={() => {
+                const colorThief = new ColorThief();
+                const img = this.imgRef.current;
+                const result = colorThief.getPalette(img, 25);
+                const result2 = colorThief.getColor(img, 25)
 
-                tertiary: {
-                  r: result[2][0],
-                  g: result[2][1],
-                  b: result[2][2]
-                },
-                quaternary: {
-                  r: result[0][0],
-                  g: result[0][1],
-                  b: result[0][2]
+                this.setState({
+                  primary: {
+                    r: result2[0],
+                    g: result2[1],
+                    b: result2[2]
+                  },
+
+                  secondary: {
+                    r: result[1][0],
+                    g: result[1][1],
+                    b: result[1][2]
+                  },
+
+                  tertiary: {
+                    r: result[2][0],
+                    g: result[2][1],
+                    b: result[2][2]
+                  },
+                  quaternary: {
+                    r: result[0][0],
+                    g: result[0][1],
+                    b: result[0][2]
+                  }
+                })
+                // this.setState({r: result2[0], g: result2[1], b: result2[2]})
+              }}
+            />
+          </div>
+
+        </div>
+
+        <div className="cassette">
+          <img src={cassette} alt="" />
+          <Palette src={this.state.nowPlaying.image}>
+            {({ data, loading, error }) => (
+
+              <div className='controls'>
+                <FontAwesomeIcon
+                  style={{ color: data.vibrant }}
+                  size='4x'
+                  icon={faBackward}
+                  onClick={() => this.previousTrack()}
+                />
+                {!this.state.nowPlaying.isPlaying
+                  ? <FontAwesomeIcon
+                    style={{ color: data.vibrant }}
+                    size='4x'
+                    icon={faPause}
+                    onClick={() => this.pauseTrack()}
+                  />
+                  : <FontAwesomeIcon
+                    style={{ color: data.vibrant }}
+                    size='4x'
+                    icon={faPlay}
+                    onClick={() => this.playTrack()}
+                  />
                 }
-              })
-              // this.setState({r: result2[0], g: result2[1], b: result2[2]})
-            }}
-          />
+                
 
-      <Palette src={this.state.nowPlaying.image}>
-        {({ data, loading, error }) => (
-          
-            <div className='controls'>
-              <FontAwesomeIcon
-                style={{ color: data.vibrant }}
-                size='4x'
-                icon={faBackward}
-                onClick={() => this.previousTrack()}
+                <FontAwesomeIcon
+                  style={{ color: data.vibrant }}
+                  size='4x'
+                  icon={faForward}
+                  onClick={() => this.nextTrack()}
                 />
+              </div>
+            )}
+          </Palette>
+        </div>
 
-              <FontAwesomeIcon
-                style={{ color: data.vibrant }}
-                size='4x'
-                icon={faPlay} 
-                onClick={() => this.playTrack()} 
-                />
-
-              <FontAwesomeIcon
-                style={{ color: data.vibrant }}
-                size='4x'
-                icon={faForward} 
-                onClick={() => this.nextTrack()}
-                />
-            </div>
-        )}
-      </Palette>
 
 
         <div className="savedTracks">
