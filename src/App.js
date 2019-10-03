@@ -18,11 +18,9 @@ class App extends Component {
     const params = this.getHashParams();
     this.state = {
       loggedIn: params.access_token ? true : false,
-      nowPlaying: {
-        name: 'Not Checked',
+        name: '',
         image: '',
-        isPlaying: false
-      },
+        isPlaying: '',
       savedTracks: [],
       primary: {
         r: '',
@@ -65,31 +63,29 @@ class App extends Component {
 
 
   componentDidMount() {
-    spotifyWebApi.getMyCurrentPlaybackState()
+    spotifyWebApi.getMyCurrentPlayingTrack()
       .then((response) => {
         this.setState({
-          nowPlaying: {
             name: response.item.name,
             image: response.item.album.images[0].url,
-            isPlaying: true
+            isPlaying: response.is_playing
           }
-        })
-      })
-  }
-
-  componentDidUpdate(prevProps, prevState){
-    if(this.state.nowPlaying !== prevState.nowPlaying){
-      spotifyWebApi.getMyCurrentPlayingTrack()
-      .then((response) => {
-        this.setState({
-          nowPlaying: {
-            name: response.item.name,
-            image: response.item.album.images[0].url
-          }
-        })
-
+        )
+        console.log(response)
       })
     }
+    
+    componentDidUpdate(prevProps, prevState) {
+      if ( this.state.isPlaying === 'false') {
+       spotifyWebApi.getMyCurrentPlayingTrack()
+        .then((response) => {
+          this.setState({
+              name: response.item.name,
+              image: response.item.album.images[0].url
+          })
+          console.log(response)
+        })
+      }
   }
 
   playTrack() {
@@ -98,13 +94,11 @@ class App extends Component {
 
   pauseTrack() {
     spotifyWebApi.pause()
-    this.setState({nowPlaying: {
-      isPlaying: false
-    }})
   }
 
   nextTrack() {
     spotifyWebApi.skipToNext()
+   
   }
 
   previousTrack() {
@@ -127,10 +121,10 @@ class App extends Component {
     return (
       <div className="App" style={{ backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})` }}>
         <a href="http://localhost:8888">
-          <button>Login With Spotif</button>
+          <button>Login With Spotify</button>
         </a>
 
-        <div>Now Playing: {this.state.nowPlaying.name}</div>
+
 
 
         <div className="artwork">
@@ -140,7 +134,7 @@ class App extends Component {
             <img
               crossOrigin={"anonymous"}
               ref={this.imgRef}
-              src={this.state.nowPlaying.image}
+              src={this.state.image}
               alt={"example"}
               className={"example__img"}
               onLoad={() => {
@@ -181,18 +175,21 @@ class App extends Component {
         </div>
 
         <div className="cassette">
-          <img src={cassette} alt="" />
-          <Palette src={this.state.nowPlaying.image}>
+          <Palette src={this.state.image}>
             {({ data, loading, error }) => (
-
+              
               <div className='controls'>
+                <div style={{ color: data.darkVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400' }}>
+                  {this.state.name}
+              <img src={cassette} alt="" />
+                </div>
                 <FontAwesomeIcon
                   style={{ color: data.vibrant }}
                   size='4x'
                   icon={faBackward}
                   onClick={() => this.previousTrack()}
                 />
-                {!this.state.nowPlaying.isPlaying
+                {(this.state.isPlaying === 'true')
                   ? <FontAwesomeIcon
                     style={{ color: data.vibrant }}
                     size='4x'
@@ -206,7 +203,7 @@ class App extends Component {
                     onClick={() => this.playTrack()}
                   />
                 }
-                
+
 
                 <FontAwesomeIcon
                   style={{ color: data.vibrant }}
@@ -221,7 +218,7 @@ class App extends Component {
 
 
 
-        <div className="savedTracks">
+        {/* <div className="savedTracks">
           {this.state.savedTracks.map((track, index) => {
             return (
               // style={{writingMode: "vertical-rl", width: 500}}
@@ -230,7 +227,7 @@ class App extends Component {
               </div>
             )
           })}
-        </div>
+        </div> */}
       </div>
     );
   }
