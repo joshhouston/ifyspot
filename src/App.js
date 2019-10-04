@@ -7,7 +7,6 @@ import { Palette } from 'react-palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
 
-const Thief = new ColorThief();
 const spotifyWebApi = new Spotify();
 
 
@@ -71,20 +70,21 @@ class App extends Component {
             isPlaying: response.is_playing
           }
         )
-        console.log(response)
       })
     }
     
     componentDidUpdate(prevProps, prevState) {
-      if ( this.state.isPlaying === 'false') {
-       spotifyWebApi.getMyCurrentPlayingTrack()
-        .then((response) => {
-          this.setState({
-              name: response.item.name,
-              image: response.item.album.images[0].url
-          })
-          console.log(response)
-        })
+      if ( this.state.savedTracks !== prevState.name) {
+        setTimeout(() => {
+
+          spotifyWebApi.getMyCurrentPlayingTrack()
+           .then((response) => {
+             this.setState({
+                 name: response.item.name,
+                 image: response.item.album.images[0].url
+             })
+           })
+        }, 4000)
       }
   }
 
@@ -119,7 +119,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App" style={{ backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})` }}>
+      <div className="App" style={{ backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})`, transition: '1s' }}>
         <a href="http://localhost:8888">
           <button>Login With Spotify</button>
         </a>
