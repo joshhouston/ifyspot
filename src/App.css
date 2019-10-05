@@ -1,30 +1,39 @@
 .App {
-  height: 100vh;
+  height: auto;
   width: 100vw;
   /* text-align: center; */
+  height: 100vh;
+}
+
+.content {
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 
 .controls {
   width: 70%;
   display: flex;
-  justify-content: space-evenly;
-  padding-top: 1em;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  height: 100%;
+  padding-bottom: 2em;
 }
 
 .artwork {
   display: flex;
   flex-direction: column;
   align-items: center;
+  height: 100vh;
 }
 
 .cassette {
-  height: auto;
-  max-width: 40vw;
+  height: 100vh;
+  max-width: 55vw;
   display: flex;
   flex-direction: column;
   align-items: center
@@ -33,5 +42,12 @@
 .cassette img{
   height: auto;
   width: 100%;
+}
+
+.icons {
+  width: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
 }
 

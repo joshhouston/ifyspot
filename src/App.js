@@ -17,9 +17,9 @@ class App extends Component {
     const params = this.getHashParams();
     this.state = {
       loggedIn: params.access_token ? true : false,
-        name: '',
-        image: '',
-        isPlaying: '',
+      name: '',
+      image: '',
+      isPlaying: false,
       savedTracks: [],
       primary: {
         r: '',
@@ -65,27 +65,28 @@ class App extends Component {
     spotifyWebApi.getMyCurrentPlayingTrack()
       .then((response) => {
         this.setState({
-            name: response.item.name,
-            image: response.item.album.images[0].url,
-            isPlaying: response.is_playing
-          }
+          name: response.item.name,
+          image: response.item.album.images[0].url,
+          isPlaying: response.is_playing
+        }
         )
       })
-    }
-    
-    componentDidUpdate(prevProps, prevState) {
-      if ( this.state.savedTracks !== prevState.name) {
-        setTimeout(() => {
+  }
 
-          spotifyWebApi.getMyCurrentPlayingTrack()
-           .then((response) => {
-             this.setState({
-                 name: response.item.name,
-                 image: response.item.album.images[0].url
-             })
-           })
-        }, 4000)
-      }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.savedTracks !== prevState.name) {
+      setTimeout(() => {
+
+        spotifyWebApi.getMyCurrentPlayingTrack()
+          .then((response) => {
+            this.setState({
+              name: response.item.name,
+              image: response.item.album.images[0].url,
+              isPlaying: response.is_playing
+            })
+          })
+      }, 4000)
+    }
   }
 
   playTrack() {
@@ -98,7 +99,7 @@ class App extends Component {
 
   nextTrack() {
     spotifyWebApi.skipToNext()
-   
+
   }
 
   previousTrack() {
@@ -120,12 +121,12 @@ class App extends Component {
   render() {
     return (
       <div className="App" style={{ backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})`, transition: '1s' }}>
+        <div className="content">
+
+        
         <a href="http://localhost:8888">
           <button>Login With Spotify</button>
         </a>
-
-
-
 
         <div className="artwork">
 
@@ -167,7 +168,6 @@ class App extends Component {
                     b: result[0][2]
                   }
                 })
-                // this.setState({r: result2[0], g: result2[1], b: result2[2]})
               }}
             />
           </div>
@@ -177,40 +177,44 @@ class App extends Component {
         <div className="cassette">
           <Palette src={this.state.image}>
             {({ data, loading, error }) => (
-              
+
               <div className='controls'>
-                <div style={{ color: data.darkVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400' }}>
+                <div style={{ color: data.darkVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
                   {this.state.name}
-              <img src={cassette} alt="" />
+                  <img src={cassette} alt="" />
                 </div>
-                <FontAwesomeIcon
-                  style={{ color: data.vibrant }}
-                  size='4x'
-                  icon={faBackward}
-                  onClick={() => this.previousTrack()}
-                />
-                {(this.state.isPlaying === 'true')
-                  ? <FontAwesomeIcon
+
+                <div className="icons">
+
+                  <FontAwesomeIcon
                     style={{ color: data.vibrant }}
                     size='4x'
-                    icon={faPause}
-                    onClick={() => this.pauseTrack()}
+                    icon={faBackward}
+                    onClick={() => this.previousTrack()}
                   />
-                  : <FontAwesomeIcon
+                  {(this.state.isPlaying)
+                    ? <FontAwesomeIcon
+                      style={{ color: data.vibrant }}
+                      size='4x'
+                      icon={faPause}
+                      onClick={() => this.pauseTrack()}
+                    />
+                    : <FontAwesomeIcon
+                      style={{ color: data.vibrant }}
+                      size='4x'
+                      icon={faPlay}
+                      onClick={() => this.playTrack()}
+                    />
+                  }
+
+
+                  <FontAwesomeIcon
                     style={{ color: data.vibrant }}
                     size='4x'
-                    icon={faPlay}
-                    onClick={() => this.playTrack()}
+                    icon={faForward}
+                    onClick={() => this.nextTrack()}
                   />
-                }
-
-
-                <FontAwesomeIcon
-                  style={{ color: data.vibrant }}
-                  size='4x'
-                  icon={faForward}
-                  onClick={() => this.nextTrack()}
-                />
+                </div>
               </div>
             )}
           </Palette>
@@ -228,6 +232,7 @@ class App extends Component {
             )
           })}
         </div> */}
+        </div>
       </div>
     );
   }
