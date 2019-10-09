@@ -35,11 +35,19 @@
 }
 
 .bottom-cassette {
+  display: flex;
+  flex-direction: column;
   max-width: 5em;
 }
 
 .bottom-cassette img {
   width: 100%;
+}
+
+.bottom-cassette h4 {
+  font-size: 2.45vmax;
+  line-height: 1;
+  margin: 0;
 }
 
 .cassette {
@@ -60,5 +68,25 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
+}
+
+.song-name h2 {
+  font-size: 8vmax;
+  letter-spacing: .875vmin;
+  line-height: 1;
+  margin: 0.5em 0 0.5em 0;
+}
+
+.song-bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.song-bottom h3 {
+  font-size:  6.5vmax;
+  font-weight: 100;
+  line-height: 1.125;
+  margin: 0;
 }
 

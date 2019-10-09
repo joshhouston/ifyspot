@@ -176,26 +176,36 @@ class App extends Component {
                 />
               </div>
 
-              <div className="song-name">
-                <h2 style={{
-                  color: `rgb(${this.state.tertiary.r}, ${this.state.tertiary.g}, ${this.state.tertiary.b})`,
-                  borderTop: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`,
-                  transition: '1s'
-                }}>イチゴ</h2>
-                <h2 style={{
-                  color: `rgb(${this.state.tertiary.r}, ${this.state.tertiary.g}, ${this.state.tertiary.b})`,
-                  borderTop: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`,
-                  transition: '1s',
-                  borderBottom: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`
-                }}>テープ</h2>
-              </div>
-              <div className="song-bottom">
-                <h3 style={{ color: `rgb(${this.state.tertiary.r}, ${this.state.tertiary.g}, ${this.state.tertiary.b})`, transition: '1s' }} >第巻壱</h3>
-                <div className="bottom-cassette">
-                  <img src={cassette} alt="" />
-                </div>
-              </div>
+              <Palette src={this.state.image}>
+                {({ data, loading, error }) => (
+                  <div className="section">
+
+                  <div className="song-name">
+                    <h2 style={{
+                      color: data.vibrant,
+                      borderTop: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`,
+                      transition: '1s'
+                    }}>イチゴ</h2>
+                    <h2 style={{
+                      color: data.vibrant,
+                      borderTop: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`,
+                      transition: '1s',
+                      borderBottom: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`
+                    }}>テープ</h2>
+                  </div>
+                    <div className="song-bottom">
+                      <h3 style={{ color: data.vibrant, transition: '1s' }} >第巻壱</h3>
+                      <div className="bottom-cassette">
+                        <h4>TRCK - 001</h4>
+                        <img src={cassette} alt="" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </Palette>
+
             </div>
+
 
 
           }
@@ -207,10 +217,10 @@ class App extends Component {
           <div className="cassette">
             <Palette src={this.state.image}>
               {({ data, loading, error }) => (
-                
-                <div className='controls'>
-                  <div style={{ color: data.darkVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
 
+                <div className='controls'>
+                  <div style={{ color: data.lightVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
+                    test
                     <img src={cassette} alt="" />
                   </div>
 
