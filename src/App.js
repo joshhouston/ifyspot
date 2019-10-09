@@ -20,28 +20,10 @@ class App extends Component {
       loggedIn: params.access_token ? true : false,
       name: '',
       image: '',
+      artist: '',
+      albums: '',
       isPlaying: false,
       savedTracks: [],
-      primary: {
-        r: '',
-        g: '',
-        b: ''
-      },
-      secondary: {
-        r: '',
-        g: '',
-        b: ''
-      },
-      tertiary: {
-        r: '',
-        g: '',
-        b: ''
-      },
-      quaternary: {
-        r: '',
-        g: '',
-        b: ''
-      },
 
     }
     if (params.access_token) {
@@ -70,8 +52,10 @@ class App extends Component {
           name: response.item.name,
           image: response.item.album.images[0].url,
           isPlaying: response.is_playing,
+          artist: response.item.artists[0].name,
+          album: response.item.album.name
         })
-        console.log(response)
+        console.log(response.item.album.name)
       })
   }
 
@@ -124,155 +108,110 @@ class App extends Component {
   render() {
     return (
 
-      <div className="App" style={{ backgroundColor: `rgb(${this.state.primary.r}, ${this.state.primary.g}, ${this.state.primary.b})`, transition: '1s' }}>
-        <div className="content">
-          {!this.state.loggedIn
-            ?
-            <div className="login">
-              <a href="http://localhost:8888">
-                <button>Login With Spotify</button>
-              </a>
-            </div>
-            :
-            <div className="album-info">
-              <div className="artwork">
-                <img
-                  crossOrigin={"anonymous"}
-                  ref={this.imgRef}
-                  src={this.state.image}
-                  alt={'img'}
-                  className={"example__img"}
-                  onLoad={() => {
-                    const colorThief = new ColorThief();
-                    const img = this.imgRef.current;
-                    const result = colorThief.getPalette(img, 25);
-                    const result2 = colorThief.getColor(img, 25)
+      <div className="App" style={{ transition: '1s' }}>
+        <Palette src={this.state.image}>
+          {({ data, loading, error }) => (
+            <div className="content" style={{ backgroundColor: `${data.darkMuted}` }}>
+              {!this.state.loggedIn
+                ? <div className="login">
+                  <a href="http://localhost:8888">
+                    <button>Login With Spotify</button>
+                  </a>
+                </div>
+                :
+                <div className="palette">
 
-                    this.setState({
-                      primary: {
-                        r: result2[0],
-                        g: result2[1],
-                        b: result2[2]
-                      },
+                  <div className="album-info">
+                    <div className="artwork">
 
-                      secondary: {
-                        r: result[1][0],
-                        g: result[1][1],
-                        b: result[1][2]
-                      },
+                      <img
+                        crossOrigin={"anonymous"}
+                        ref={this.imgRef}
+                        src={this.state.image}
+                        alt={'img'}
+                        className={"example__img"}
+                      />
+                    </div>
 
-                      tertiary: {
-                        r: result[2][0],
-                        g: result[2][1],
-                        b: result[2][2]
-                      },
-                      quaternary: {
-                        r: result[0][0],
-                        g: result[0][1],
-                        b: result[0][2]
-                      }
-                    })
-                  }}
-                />
-              </div>
+                  </div>
 
-              <Palette src={this.state.image}>
-                {({ data, loading, error }) => (
                   <div className="section">
 
-                  <div className="song-name">
-                    <h2 style={{
-                      color: data.vibrant,
-                      borderTop: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`,
-                      transition: '1s'
-                    }}>イチゴ</h2>
-                    <h2 style={{
-                      color: data.vibrant,
-                      borderTop: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`,
-                      transition: '1s',
-                      borderBottom: `.33vmin solid rgb(${this.state.quaternary.r}, ${this.state.quaternary.g}, ${this.state.quaternary.b})`
-                    }}>テープ</h2>
-                  </div>
+                    <div className="song-name">
+                      <h2 style={{
+                        color: data.vibrant,
+                        borderTop: `.33vmin solid ${data.lightVibrant})`,
+                        transition: '1s'
+                        
+                      }}>イチゴ</h2>
+                      <h2 style={{
+                        color: data.vibrant,
+                        borderTop: `.33vmin solid ${data.lightVibrant}`,
+                        transition: '1s',
+                        borderBottom: `.33vmin solid ${data.lightVibrant}`
+                        
+                      }}>テープ</h2>
+                    </div>
                     <div className="song-bottom">
-                      <h3 style={{ color: data.vibrant, transition: '1s' }} >第巻壱</h3>
+                      <h3 style={{ color: data.vibrant, transition: '1s' }} ></h3>
                       <div className="bottom-cassette">
                         <h4>TRCK - 001</h4>
                         <img src={cassette} alt="" />
                       </div>
                     </div>
                   </div>
-                )}
-              </Palette>
+
+                  <div className="cassette">
+
+
+                    <div className='controls'>
+                      <div style={{ color: data.lightVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
+                        test
+                    <img src={cassette} alt="" />
+                      </div>
+
+                      <div className="icons">
+
+                        <FontAwesomeIcon
+                          style={{ color: data.vibrant }}
+                          size='4x'
+                          icon={faBackward}
+                          onClick={() => this.previousTrack()}
+                        />
+                        {(this.state.isPlaying)
+                          ? <FontAwesomeIcon
+                            style={{ color: data.vibrant }}
+                            size='4x'
+                            icon={faPause}
+                            onClick={() => this.pauseTrack()}
+                          />
+                          : <FontAwesomeIcon
+                            style={{ color: data.vibrant }}
+                            size='4x'
+                            icon={faPlay}
+                            onClick={() => this.playTrack()}
+                          />
+                        }
+
+
+                        <FontAwesomeIcon
+                          style={{ color: data.vibrant }}
+                          size='4x'
+                          icon={faForward}
+                          onClick={() => this.nextTrack()}
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              }
 
             </div>
+          )}
 
-
-
-          }
-
-
-
-
-
-          <div className="cassette">
-            <Palette src={this.state.image}>
-              {({ data, loading, error }) => (
-
-                <div className='controls'>
-                  <div style={{ color: data.lightVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
-                    test
-                    <img src={cassette} alt="" />
-                  </div>
-
-                  <div className="icons">
-
-                    <FontAwesomeIcon
-                      style={{ color: data.vibrant }}
-                      size='4x'
-                      icon={faBackward}
-                      onClick={() => this.previousTrack()}
-                    />
-                    {(this.state.isPlaying)
-                      ? <FontAwesomeIcon
-                        style={{ color: data.vibrant }}
-                        size='4x'
-                        icon={faPause}
-                        onClick={() => this.pauseTrack()}
-                      />
-                      : <FontAwesomeIcon
-                        style={{ color: data.vibrant }}
-                        size='4x'
-                        icon={faPlay}
-                        onClick={() => this.playTrack()}
-                      />
-                    }
-
-
-                    <FontAwesomeIcon
-                      style={{ color: data.vibrant }}
-                      size='4x'
-                      icon={faForward}
-                      onClick={() => this.nextTrack()}
-                    />
-                  </div>
-                </div>
-              )}
-            </Palette>
-          </div>
-
-
-
-          {/* <div className="savedTracks">
-          {this.state.savedTracks.map((track, index) => {
-            return (
-              // style={{writingMode: "vertical-rl", width: 500}}
-              <div key={index}  >
-                <h3>{track.track.name}</h3>
-              </div>
-            )
-          })}
-        </div> */}
-        </div>
+        </Palette>
       </div>
     );
   }
