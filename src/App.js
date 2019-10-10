@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
-import ColorThief from 'colorthief';
 import cassette from './cassette.png'
 import { Palette } from 'react-palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
+import SpotifyWebApi from 'spotify-web-api-js';
 
 
 const spotifyWebApi = new Spotify();
@@ -55,8 +55,12 @@ class App extends Component {
           artist: response.item.artists[0].name,
           album: response.item.album.name
         })
-        console.log(response.item.album.name)
       })
+
+    spotifyWebApi.getMyRecentlyPlayedTracks()
+    .then((response) => {
+      console.log(response)
+    })  
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -68,10 +72,11 @@ class App extends Component {
             this.setState({
               name: response.item.name,
               image: response.item.album.images[0].url,
-              isPlaying: response.is_playing
+              isPlaying: response.is_playing,
+              artist: response.item.artists[0].name
             })
           })
-      }, 4000)
+      }, 3000)
     }
   }
 
@@ -91,8 +96,6 @@ class App extends Component {
   previousTrack() {
     spotifyWebApi.skipToPrevious()
   }
-
-
 
   getSavedTracks() {
     spotifyWebApi.getMySavedTracks()
@@ -121,6 +124,24 @@ class App extends Component {
                 :
                 <div className="palette">
 
+                  
+
+                  <div className="section">
+                    <div className="side-title">
+                      <div className="side-art">
+                        <img src={this.state.image} alt="album art"/>
+                      </div>
+
+                      <div className="side-headline">
+                        <h1 style={{color: data.vibrant}}>{this.state.artist}</h1>
+                      </div>
+                      <div className="vol">
+                        <h4 style={{color: data.lightVibrant}}>VOL.1</h4>
+                      </div>
+                    </div>
+
+
+                 <div className="japanese">
                   <div className="album-info">
                     <div className="artwork">
 
@@ -134,40 +155,38 @@ class App extends Component {
                     </div>
 
                   </div>
-
-                  <div className="section">
-
                     <div className="song-name">
                       <h2 style={{
                         color: data.vibrant,
-                        borderTop: `.33vmin solid ${data.lightVibrant})`,
+                        borderTop: `.33vmin solid ${data.lightVibrant}`,
                         transition: '1s'
                         
-                      }}>イチゴ</h2>
+                      }}>アート</h2>
                       <h2 style={{
                         color: data.vibrant,
                         borderTop: `.33vmin solid ${data.lightVibrant}`,
                         transition: '1s',
                         borderBottom: `.33vmin solid ${data.lightVibrant}`
                         
-                      }}>テープ</h2>
+                      }}>サイト</h2>
                     </div>
                     <div className="song-bottom">
-                      <h3 style={{ color: data.vibrant, transition: '1s' }} ></h3>
+                      <h3 style={{ color: data.lightVibrant, transition: '1s' }} >トラック</h3>
                       <div className="bottom-cassette">
-                        <h4>TRCK - 001</h4>
+                        <h4 style={{color:data.vibrant}}>TRK - 001</h4>
                         <img src={cassette} alt="" />
                       </div>
                     </div>
                   </div>
+                   </div> 
 
                   <div className="cassette">
 
 
                     <div className='controls'>
                       <div style={{ color: data.lightVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
-                        test
-                    <img src={cassette} alt="" />
+                        <h4>{this.state.name}</h4>
+                        <img src={cassette} alt="" />
                       </div>
 
                       <div className="icons">
@@ -218,3 +237,5 @@ class App extends Component {
 }
 
 export default App;
+
+

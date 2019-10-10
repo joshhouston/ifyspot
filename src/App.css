@@ -23,6 +23,42 @@
   flex-wrap: wrap;
 }
 
+.section {
+  width: 50vw;
+  display: flex;
+  flex-direction: row;
+}
+
+.side-title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.side-art {
+  width: 5em;
+}
+
+.side-art img {
+  width: 100%;
+}
+
+.side-headline {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.side-headline h1{
+  margin: 0;
+  writing-mode: sideways-rl;
+}
+
+.vol h4 {
+  font-size: 1.5vmax;
+}
+
 
 .controls {
   width: 70%;
@@ -34,34 +70,45 @@
   padding-bottom: 2em;
 }
 
+.controls h4 {
+  margin: 0;
+  font-size: 3vmax;
+}
+
 .album-info {
   display: flex;
   flex-direction: column;
 }
 .artwork img {
-  max-width: 20em;
-  
+  max-width: 12em;
 }
 
 .bottom-cassette {
   display: flex;
   flex-direction: column;
-  max-width: 5em;
+  flex-wrap: nowrap;
+  max-width: 6em;
+  margin-left: 1em;
 }
 
 .bottom-cassette img {
+  margin-top: 0.5em;
   width: 100%;
 }
 
 .bottom-cassette h4 {
-  font-size: 2.45vmax;
+  font-size: 1.3vmax;
   line-height: 1;
   margin: 0;
 }
 
+.japanese {
+  padding-left: .5vmax;
+}
+
 .cassette {
   height: 100vh;
-  max-width: 55vw;
+  width: 45vw;
   display: flex;
   flex-direction: column;
   align-items: center
@@ -83,7 +130,8 @@
   font-size: 8vmax;
   letter-spacing: .875vmin;
   line-height: 1;
-  margin: 0.5em 0 0.5em 0;
+  margin: 0;
+  padding: .75vmax 0;
 }
 
 .song-bottom {
