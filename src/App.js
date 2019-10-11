@@ -144,22 +144,22 @@ class App extends Component {
                         <ul className="tracks" >
                           {this.state.side1.map((track, index) => {
                             return (
-                              <li key={index} style={{color: data.lightVibrant}}>{track.track.name}</li>
+                              <li key={index} style={{ color: data.lightVibrant }}>{track.track.name}</li>
                             )
                           })}
                         </ul>
                       </div>
 
                       <div className="side-cassette">
-                        <img src={cassette} alt=""/>
-                        <h4>RECENT</h4>
+                        <h4 style={{ color: data.vibrant }}>RECENT</h4>
+                        <img src={cassette} alt="" />
                       </div>
 
                       <div className="recent-tracks2">
                         <ul className="tracks" >
                           {this.state.side2.map((track, index) => {
                             return (
-                              <li key={index} style={{color: data.vibrant}}>{track.track.name}</li>
+                              <li key={index} style={{ color: data.vibrant }}>{track.track.name}</li>
                             )
                           })}
                         </ul>
