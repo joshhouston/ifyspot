@@ -3,13 +3,14 @@
   width: 100vw;
   /* text-align: center; */
   /* height: 100vh; */
+  /* font-family: 'Didact Gothic', sans-serif; */
 }
 
 .content {
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  /* justify-content: space-evenly; */
   align-items: center;
   flex-wrap: wrap;
 }
@@ -25,8 +26,32 @@
 
 .section {
   width: 50vw;
+  height: 45vw;
   display: flex;
   flex-direction: row;
+}
+
+.recently {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 23%;
+}
+
+.sd1 h3 {
+  margin: 0;
+  font-size: 3vmax;
+}
+
+.sd2 h3 {
+  -webkit-transform:rotate(-180deg);
+  -moz-transform:rotate(-180deg);
+  -o-transform:rotate(-180deg);
+  transform:rotate(-180deg);
+  ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";
+  filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=2);
+  margin: 0;
+  font-size: 3vmax;
 }
 
 .side-title {
@@ -53,10 +78,64 @@
 .side-headline h1{
   margin: 0;
   writing-mode: sideways-rl;
+  font-size: 4.5vw;
 }
 
 .vol h4 {
   font-size: 1.5vmax;
+}
+
+.recent-tracks1 {
+  writing-mode: sideways-rl;
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-tracks2 {
+  writing-mode: sideways-rl;
+  display: flex;
+  flex-direction: column;
+}
+
+.recent-tracks1 ul {
+  text-align: right;
+}
+
+.recent-tracks2 ul {
+  text-align: left;
+}
+.side-cassette {
+  max-width: 80%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 22%;
+}
+
+.side-cassette h4 {
+  writing-mode: sideways-rl;
+  margin: 0;
+  font-size: 2vmax;
+  line-height: 1;
+}
+
+.side-cassette img {
+  width: 100%;
+  transform: rotate(-90deg);
+}
+
+
+
+ul {
+  writing-mode: sideways-rl;
+  list-style-type: none;
+}
+
+li {
+  font-size: 1vmax;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
 }
 
 
@@ -79,8 +158,13 @@
   display: flex;
   flex-direction: column;
 }
+
+.artwork {
+  width: 50%;
+}
+
 .artwork img {
-  max-width: 12em;
+  width: 100%;
 }
 
 .bottom-cassette {
