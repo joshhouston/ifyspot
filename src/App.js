@@ -5,9 +5,11 @@ import cassette from './cassette.png'
 import { Palette } from 'react-palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
+import oridomi from 'oridomi'
 
 
 
+const folded = new oridomi() 
 const spotifyWebApi = new Spotify();
 
 
@@ -15,6 +17,7 @@ class App extends Component {
   constructor() {
     super();
     this.imgRef = React.createRef();
+    this.foldRef = React.createRef();
     const params = this.getHashParams();
     this.state = {
       loggedIn: params.access_token ? true : false,
@@ -46,7 +49,7 @@ class App extends Component {
 
 
   componentDidMount() {
-
+    console.log(folded)
     spotifyWebApi.getMyCurrentPlayingTrack()
       .then((response) => {
         this.setState({
@@ -64,7 +67,6 @@ class App extends Component {
           side1: response.items.slice(0, 5),
           side2: response.items.slice(5, 10)
         })
-        console.log(response.items[0].track.name)
       })
 
 
@@ -183,7 +185,7 @@ class App extends Component {
                     </div>
 
 
-                    <div className="japanese">
+                    <div className="japanese" ref={this.foldRef}>
                       <div className="album-info">
                         <div className="artwork">
 
