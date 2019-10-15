@@ -1,18 +1,17 @@
 .App {
-  height: auto;
   width: 100vw;
-  /* text-align: center; */
-  /* height: 100vh; */
+  height: 100vh;
   /* font-family: 'Didact Gothic', sans-serif; */
+  transition: '.6s'
 }
 
 .content {
   width: 100%;
   display: flex;
-  flex-direction: row;
   /* justify-content: space-evenly; */
   align-items: center;
   flex-wrap: wrap;
+  height: 100%;
 }
 
 .palette {
@@ -22,6 +21,7 @@
   justify-content: space-evenly;
   align-items: center;
   flex-wrap: wrap;
+  height: 100vh;
 }
 
 .section {
@@ -119,12 +119,16 @@
 .recent-tracks2 ul {
   text-align: left;
 }
+
+.tracks {
+  padding: 0;
+}
+
 .side-cassette {
   max-width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  height: 22%;
   transform:rotate(7deg);
   -ms-transform:rotate(90deg); /* IE 9 */
   -moz-transform:rotate(90deg); /* Firefox */
@@ -165,7 +169,7 @@ li {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  /* height: 100%; */
   padding-bottom: 2em;
 }
 
@@ -212,7 +216,7 @@ li {
 }
 
 .cassette {
-  height: 100vh;
+  height: 45vh;
   width: 45vw;
   display: flex;
   flex-direction: column;
@@ -251,4 +255,32 @@ li {
   line-height: 1.125;
   margin: 0;
 }
+
+
+
+  @media screen and (max-width: 1024px){
+    .palette {
+      display: flex;
+      flex-direction: column!important;
+      flex-wrap: nowrap;
+     
+      justify-content: initial;
+    }
+  
+    .section {
+      width: 100%;
+      height: 100vw;
+    }
+
+    .song-name h2 {
+      font-size: 17vw;
+    }
+
+    .cassette {
+      margin-top: 3vmax;
+      padding: 0 2vmax;
+      width: 100%;
+    }
+  }
+
 

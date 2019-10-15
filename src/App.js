@@ -9,7 +9,7 @@ import oridomi from 'oridomi'
 
 
 
-const folded = new oridomi() 
+// const folded = new oridomi() 
 const spotifyWebApi = new Spotify();
 
 
@@ -27,9 +27,11 @@ class App extends Component {
       albums: '',
       isPlaying: false,
       side1: [],
-      side2: []
+      side2: [],
+      folded: false
 
     }
+    this.fold = this.fold.bind(this)
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token)
     }
@@ -44,12 +46,10 @@ class App extends Component {
     }
     return hashParams;
   }
-
-
-
-
+  
   componentDidMount() {
-    console.log(folded)
+    this.node = this.foldRef.current
+
     spotifyWebApi.getMyCurrentPlayingTrack()
       .then((response) => {
         this.setState({
@@ -69,26 +69,37 @@ class App extends Component {
         })
       })
 
-
-
   }
+
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.savedTracks !== prevState.name) {
-      setTimeout(() => {
+    
+    if(this.state.folded){
+      var folded = new oridomi(this.node, {vPanels: [23, 12, 65]})
+     folded.accordion(30)
+   }
 
-        spotifyWebApi.getMyCurrentPlayingTrack()
-          .then((response) => {
-            this.setState({
-              name: response.item.name,
-              image: response.item.album.images[0].url,
-              isPlaying: response.is_playing,
-              artist: response.item.artists[0].name
-            })
-          })
-      }, 3000)
-    }
+    // if (this.state.savedTracks !== prevState.name) {
+    //   setTimeout(() => {
+
+    //     spotifyWebApi.getMyCurrentPlayingTrack()
+    //       .then((response) => {
+    //         this.setState({
+    //           name: undefined ? '' : response.item.name,
+    //           image: response.item.album.images[0].url,
+    //           isPlaying: response.is_playing,
+    //           artist: response.item.artists[0].name
+    //         })
+    //       })
+    //   }, 1000)
+    // }
+  
   }
+
+  fold(){
+    !this.state.folded ? this.setState({folded: true}) : this.setState({folded: false})
+  }
+ 
 
   playTrack() {
     spotifyWebApi.play()
@@ -121,10 +132,14 @@ class App extends Component {
   render() {
     return (
 
-      <div className="App" style={{ transition: '1s' }}>
+      <div className="App">
         <Palette src={this.state.image}>
           {({ data, loading, error }) => (
-            <div className="content" style={{ backgroundColor: `${data.darkMuted}` }}>
+            <div
+              className="content"
+              style={{ backgroundColor: `${data.darkMuted}` }}
+             
+              >
               {!this.state.loggedIn
                 ? <div className="login">
                   <a href="http://localhost:8888">
@@ -136,7 +151,7 @@ class App extends Component {
 
 
 
-                  <div className="section">
+                  <div className="section" onClick={this.fold}  ref={this.foldRef}>
                     <div className="recently">
                       <div className="sd1">
                         <h3 style={{ color: data.vibrant }}>SD 1:</h3>
@@ -185,7 +200,7 @@ class App extends Component {
                     </div>
 
 
-                    <div className="japanese" ref={this.foldRef}>
+                    <div className="japanese">
                       <div className="album-info">
                         <div className="artwork">
 
