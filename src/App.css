@@ -1,8 +1,16 @@
 .App {
   width: 100vw;
-  height: 100vh;
+  /* height: 100vh; */
   /* font-family: 'Didact Gothic', sans-serif; */
   transition: '.6s'
+}
+
+.folded {
+  padding-left: 2em;
+}
+
+.oridomi-active {
+  transform: translate(10%);
 }
 
 .content {
@@ -18,7 +26,7 @@
   width: 100%;
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly;
+  justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
   height: 100vh;
@@ -64,7 +72,7 @@
 }
 
 .side-art {
-  width: 5em;
+  width: 100%;
 }
 
 .side-art img {
@@ -170,7 +178,7 @@ li {
   justify-content: center;
   align-items: center;
   /* height: 100%; */
-  padding-bottom: 2em;
+  /* padding-bottom: 2em; */
 }
 
 .controls h4 {
@@ -212,8 +220,12 @@ li {
 }
 
 .japanese {
-  padding-left: .5vmax;
+  height: 100%;
+  padding-left: .2vmax;
+  width: 65%;
 }
+
+
 
 .cassette {
   height: 45vh;
@@ -226,6 +238,7 @@ li {
 .cassette img{
   height: auto;
   width: 100%;
+  transform: rotate(180deg);
 }
 
 .icons {
@@ -261,26 +274,36 @@ li {
   @media screen and (max-width: 1024px){
     .palette {
       display: flex;
-      flex-direction: column!important;
+      flex-direction: column;
       flex-wrap: nowrap;
      
-      justify-content: initial;
+      justify-content: flex-start;
     }
   
     .section {
       width: 100%;
       height: 100vw;
+      /* transform: translate(12.5%,2%); */
     }
 
     .song-name h2 {
-      font-size: 17vw;
+      font-size: 16vw;
     }
-
+    
     .cassette {
       margin-top: 3vmax;
       padding: 0 2vmax;
+      width: 90%;
+    }
+
+    .icons {
       width: 100%;
     }
+
+    li {
+      font-size: 2vw;
+    }
+    
   }
 
 

@@ -7,9 +7,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
 import oridomi from 'oridomi'
 
-
-
-// const folded = new oridomi() 
 const spotifyWebApi = new Spotify();
 
 
@@ -18,7 +15,9 @@ class App extends Component {
     super();
     this.imgRef = React.createRef();
     this.foldRef = React.createRef();
+    this.testRef = React.createRef();
     const params = this.getHashParams();
+    
     this.state = {
       loggedIn: params.access_token ? true : false,
       name: '',
@@ -46,9 +45,10 @@ class App extends Component {
     }
     return hashParams;
   }
-  
+
   componentDidMount() {
     this.node = this.foldRef.current
+    this.test = this.testRef.current
 
     spotifyWebApi.getMyCurrentPlayingTrack()
       .then((response) => {
@@ -73,11 +73,15 @@ class App extends Component {
 
 
   componentDidUpdate(prevProps, prevState) {
-    
-    if(this.state.folded){
-      var folded = new oridomi(this.node, {vPanels: [23, 12, 65]})
-     folded.accordion(30)
-   }
+
+    if (this.state.folded) {
+      const folded = new oridomi(this.node, {
+        vPanels: [25, 11, 64],
+        touchEnabled: false
+      })
+      folded.accordion(30)
+    }
+
 
     // if (this.state.savedTracks !== prevState.name) {
     //   setTimeout(() => {
@@ -93,13 +97,13 @@ class App extends Component {
     //       })
     //   }, 1000)
     // }
-  
+
   }
 
-  fold(){
-    !this.state.folded ? this.setState({folded: true}) : this.setState({folded: false})
+  fold() {
+    !this.state.folded ? this.setState({ folded: true }) : this.setState({ folded: false })
   }
- 
+
 
   playTrack() {
     spotifyWebApi.play()
@@ -138,8 +142,8 @@ class App extends Component {
             <div
               className="content"
               style={{ backgroundColor: `${data.darkMuted}` }}
-             
-              >
+
+            >
               {!this.state.loggedIn
                 ? <div className="login">
                   <a href="http://localhost:8888">
@@ -151,7 +155,7 @@ class App extends Component {
 
 
 
-                  <div className="section" onClick={this.fold}  ref={this.foldRef}>
+                  <div className="section folded" onClick={this.fold} ref={this.foldRef}>
                     <div className="recently">
                       <div className="sd1">
                         <h3 style={{ color: data.vibrant }}>SD 1:</h3>
@@ -161,7 +165,7 @@ class App extends Component {
                         <ul className="tracks" >
                           {this.state.side1.map((track, index) => {
                             return (
-                              <li key={index} style={{ color: data.lightVibrant }}>{track.track.name}</li>
+                              <li key={index} style={{ color: data.lightVibrant }}>{track.track.name.substring(0, 16)}</li>
                             )
                           })}
                         </ul>
@@ -176,7 +180,7 @@ class App extends Component {
                         <ul className="tracks" >
                           {this.state.side2.map((track, index) => {
                             return (
-                              <li key={index} style={{ color: data.vibrant }}>{track.track.name}</li>
+                              <li key={index} style={{ color: data.vibrant }}>{track.track.name.substring(0, 20)}</li>
                             )
                           })}
                         </ul>
@@ -215,22 +219,23 @@ class App extends Component {
 
                       </div>
                       <div className="song-name">
-                        <h2 style={{
-                          color: data.vibrant,
-                          borderTop: `.33vmin solid ${data.lightVibrant}`,
-                          transition: '1s'
-
-                        }}>アート</h2>
+                        <h2
+                          ref={this.testRef}
+                          style={{
+                            color: data.vibrant,
+                            borderTop: `.33vmin solid ${data.lightVibrant}`,
+                            transition: '1s'
+                          }}>カラー</h2>
                         <h2 style={{
                           color: data.vibrant,
                           borderTop: `.33vmin solid ${data.lightVibrant}`,
                           transition: '1s',
                           borderBottom: `.33vmin solid ${data.lightVibrant}`
 
-                        }}>サイト</h2>
+                        }}>テープ</h2>
                       </div>
                       <div className="song-bottom">
-                        <h3 style={{ color: data.lightVibrant, transition: '1s' }} >トラック</h3>
+                        <h3 style={{ color: data.lightVibrant, transition: '1s' }} >第巻壱</h3>
                         <div className="bottom-cassette">
                           <h4 style={{ color: data.vibrant }}>TRK - 001</h4>
                           <img src={cassette} alt="" />
