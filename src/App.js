@@ -5,7 +5,7 @@ import cassette from './cassette.png'
 import { Palette } from 'react-palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
-import oridomi from 'oridomi'
+import Box from './components/Box';
 
 const spotifyWebApi = new Spotify();
 
@@ -13,11 +13,9 @@ const spotifyWebApi = new Spotify();
 class App extends Component {
   constructor() {
     super();
-    this.imgRef = React.createRef();
-    this.foldRef = React.createRef();
     this.testRef = React.createRef();
     const params = this.getHashParams();
-    
+
     this.state = {
       loggedIn: params.access_token ? true : false,
       name: '',
@@ -27,10 +25,8 @@ class App extends Component {
       isPlaying: false,
       side1: [],
       side2: [],
-      folded: false
 
     }
-    this.fold = this.fold.bind(this)
     if (params.access_token) {
       spotifyWebApi.setAccessToken(params.access_token)
     }
@@ -47,7 +43,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-    this.node = this.foldRef.current
     this.test = this.testRef.current
 
     spotifyWebApi.getMyCurrentPlayingTrack()
@@ -60,6 +55,7 @@ class App extends Component {
           album: response.item.album.name
         })
       })
+      .catch(error => console.log(error))
 
     spotifyWebApi.getMyRecentlyPlayedTracks()
       .then((response) => {
@@ -74,34 +70,23 @@ class App extends Component {
 
   componentDidUpdate(prevProps, prevState) {
 
-    if (this.state.folded) {
-      const folded = new oridomi(this.node, {
-        vPanels: [25, 11, 64],
-        touchEnabled: false
-      })
-      folded.accordion(30)
+    if (this.state.savedTracks !== prevState.name) {
+      setTimeout(() => {
+
+        spotifyWebApi.getMyCurrentPlayingTrack()
+          .then((response) => {
+            
+            this.setState({
+              name: response.item.name,
+              image: response.item.album.images[0].url,
+              isPlaying: response.is_playing,
+              artist: response.item.artists[0].name
+            })
+          })
+          .catch(error => console.log(error))
+      }, 1000)
     }
 
-
-    // if (this.state.savedTracks !== prevState.name) {
-    //   setTimeout(() => {
-
-    //     spotifyWebApi.getMyCurrentPlayingTrack()
-    //       .then((response) => {
-    //         this.setState({
-    //           name: undefined ? '' : response.item.name,
-    //           image: response.item.album.images[0].url,
-    //           isPlaying: response.is_playing,
-    //           artist: response.item.artists[0].name
-    //         })
-    //       })
-    //   }, 1000)
-    // }
-
-  }
-
-  fold() {
-    !this.state.folded ? this.setState({ folded: true }) : this.setState({ folded: false })
   }
 
 
@@ -122,17 +107,6 @@ class App extends Component {
     spotifyWebApi.skipToPrevious()
   }
 
-  getSavedTracks() {
-    spotifyWebApi.getMySavedTracks()
-      .then((response) => {
-        console.log(response.items)
-        this.setState({
-          savedTracks: response.items
-        })
-      })
-  }
-
-
   render() {
     return (
 
@@ -144,6 +118,7 @@ class App extends Component {
               style={{ backgroundColor: `${data.darkMuted}` }}
 
             >
+
               {!this.state.loggedIn
                 ? <div className="login">
                   <a href="http://localhost:8888">
@@ -151,104 +126,25 @@ class App extends Component {
                   </a>
                 </div>
                 :
+
                 <div className="palette">
 
+                    <Box
 
-
-                  <div className="section folded" onClick={this.fold} ref={this.foldRef}>
-                    <div className="recently">
-                      <div className="sd1">
-                        <h3 style={{ color: data.vibrant }}>SD 1:</h3>
-                      </div>
-
-                      <div className="recent-tracks1">
-                        <ul className="tracks" >
-                          {this.state.side1.map((track, index) => {
-                            return (
-                              <li key={index} style={{ color: data.lightVibrant }}>{track.track.name.substring(0, 16)}</li>
-                            )
-                          })}
-                        </ul>
-                      </div>
-
-                      <div className="side-cassette">
-                        <h4 style={{ color: data.vibrant }}>RECENT</h4>
-                        <img src={cassette} alt="" />
-                      </div>
-
-                      <div className="recent-tracks2">
-                        <ul className="tracks" >
-                          {this.state.side2.map((track, index) => {
-                            return (
-                              <li key={index} style={{ color: data.vibrant }}>{track.track.name.substring(0, 20)}</li>
-                            )
-                          })}
-                        </ul>
-                      </div>
-                      <div className="sd2">
-                        <h3 style={{ color: data.lightVibrant }}>SD 2:</h3>
-                      </div>
-                    </div>
-
-                    <div className="side-title">
-                      <div className="side-art">
-                        <img src={this.state.image} alt="album art" />
-                      </div>
-
-                      <div className="side-headline">
-                        <h1 style={{ color: data.vibrant }}>{this.state.artist}</h1>
-                      </div>
-                      <div className="vol">
-                        <h4 style={{ color: data.lightVibrant }}>VOL.1</h4>
-                      </div>
-                    </div>
-
-
-                    <div className="japanese">
-                      <div className="album-info">
-                        <div className="artwork">
-
-                          <img
-                            crossOrigin={"anonymous"}
-                            ref={this.imgRef}
-                            src={this.state.image}
-                            alt={'img'}
-                            className={"example__img"}
-                          />
-                        </div>
-
-                      </div>
-                      <div className="song-name">
-                        <h2
-                          ref={this.testRef}
-                          style={{
-                            color: data.vibrant,
-                            borderTop: `.33vmin solid ${data.lightVibrant}`,
-                            transition: '1s'
-                          }}>カラー</h2>
-                        <h2 style={{
-                          color: data.vibrant,
-                          borderTop: `.33vmin solid ${data.lightVibrant}`,
-                          transition: '1s',
-                          borderBottom: `.33vmin solid ${data.lightVibrant}`
-
-                        }}>テープ</h2>
-                      </div>
-                      <div className="song-bottom">
-                        <h3 style={{ color: data.lightVibrant, transition: '1s' }} >第巻壱</h3>
-                        <div className="bottom-cassette">
-                          <h4 style={{ color: data.vibrant }}>TRK - 001</h4>
-                          <img src={cassette} alt="" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                      name={this.state.name}
+                      image={this.state.image}
+                      data={data}
+                      side1={this.state.side1}
+                      side2={this.state.side2}
+                      artist={this.state.artist}
+                      isPlaying={this.state.isPlaying}
+                    />
+           
 
                   <div className="cassette">
 
-
                     <div className='controls'>
-                      <div style={{ color: data.lightVibrant, fontFamily: 'Didact Gothic', fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
+                      <div style={{ color: data.lightVibrant, fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
                         <h4>{this.state.name}</h4>
                         <img src={cassette} alt="" />
                       </div>
@@ -285,12 +181,9 @@ class App extends Component {
                         />
                       </div>
                     </div>
-
                   </div>
-
                 </div>
               }
-
             </div>
           )}
 
