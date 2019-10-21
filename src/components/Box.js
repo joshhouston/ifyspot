@@ -5,24 +5,12 @@ class Box extends Component {
     constructor() {
         super();
         this.imgRef = React.createRef();
-
-        this.state = {
-            data: {},
-            side1: [],
-            side2: [],
-            image: '',
-            name: '',
-            artist: '',
-            folded: false,
-
-        }
-
     }
 
     render() {
         return (
 
-            <div className="section folded">
+            <div className="section">
                 <div className="recently">
                     <div className="sd1">
                         <h3 style={{ color: this.props.data.vibrant }}>SD 1:</h3>
@@ -87,7 +75,6 @@ class Box extends Component {
                     </div>
                     <div className="song-name">
                         <h2
-                            ref={this.testRef}
                             style={{
                                 color: this.props.data.vibrant,
                                 borderTop: `.33vmin solid ${this.props.data.lightVibrant}`,

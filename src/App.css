@@ -193,7 +193,7 @@ li {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  max-width: 6em;
+  max-width: 8em;
   margin-left: 1em;
 }
 
@@ -217,7 +217,6 @@ li {
 
 
 .cassette {
-  height: 45vh;
   width: 45vw;
   display: flex;
   flex-direction: column;
