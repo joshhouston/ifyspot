@@ -3,7 +3,43 @@
   transition: '.6s'
 }
 
+.login{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #282828;
+}
 
+#spotlogin {
+  background-color: #1DB954;
+  border: none;
+  border-radius: 5px;
+  color: #FFF;
+  height: 3em;
+  font-size: 1em;
+}
+
+.welcome {
+  color: #FFF;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome-list {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.welcome-list li {
+  list-style-type: disc;
+  margin-top: 1em;
+  font-size: 1em;
+}
 
 .content {
   width: 100%;
