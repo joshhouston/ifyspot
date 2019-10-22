@@ -11,7 +11,7 @@ const spotifyWebApi = new Spotify();
 
 export const authEndpoint = 'https://accounts.spotify.com/authorize';
 const clientId = '1685b77ad23941e9a3ab8c1ecde63bf0';
-const redirectUri = 'https://colorspot.netlify.com';
+const redirectUri = 'https://colorspot.art';
 const scopes = [
   "user-read-private",
   "user-read-email",
