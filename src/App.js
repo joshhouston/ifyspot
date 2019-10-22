@@ -2,11 +2,23 @@ import React, { Component } from 'react';
 import './App.css';
 import Spotify from 'spotify-web-api-js';
 import cassette from './cassette.png'
+import Box from './components/Box';
 import { Palette } from 'react-palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
-import Box from './components/Box';
 const spotifyWebApi = new Spotify();
+
+export const authEndpoint = 'https://accounts.spotify.com/authorize';
+const clientId = '1685b77ad23941e9a3ab8c1ecde63bf0';
+const redirectUri = 'http://localhost:3000/';
+const scopes = [
+  "user-read-private", 
+  "user-read-email", 
+  "user-read-playback-state", 
+  "user-modify-playback-state", 
+  "user-library-read",
+  "user-read-recently-played",
+];
 
 
 class App extends Component {
@@ -116,7 +128,7 @@ class App extends Component {
 
               {!this.state.loggedIn
                 ? <div className="login">
-                  <a href='http://localhost:8888'>
+                  <a href={`${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join("%20")}&response_type=token&show_dialog=true`}>
                     <button >Login With Spotify</button>
                   </a>
                 </div>
