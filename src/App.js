@@ -6,7 +6,6 @@ import { Palette } from 'react-palette';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlay, faBackward, faForward, faPause } from '@fortawesome/free-solid-svg-icons';
 import Box from './components/Box';
-const {CLIENTS_SECRET, CLIENTS_ID} = process.env 
 const spotifyWebApi = new Spotify();
 
 
@@ -41,7 +40,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-   console.log(CLIENTS_ID)
     spotifyWebApi.getMyCurrentPlayingTrack()
       .then((response) => {
         this.setState({
@@ -102,10 +100,6 @@ class App extends Component {
 
   previousTrack() {
     spotifyWebApi.skipToPrevious()
-  }
-
-  spotifyLogin(){
-    window.open('http://localhost:8888', 'Yes', 'width=800,height=600')
   }
 
   render() {
