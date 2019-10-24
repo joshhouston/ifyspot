@@ -169,8 +169,9 @@ class App extends Component {
                       <div style={{ color: data.lightVibrant, fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
                         <h4>{this.state.name}</h4>
                         {/* <img src={cassette} alt="" /> */}
-						<Cassette data={data}
-						
+						<Cassette 
+							data={data}
+							isPlaying={this.state.isPlaying}
 						/>
                       </div>
 

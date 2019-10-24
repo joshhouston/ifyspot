@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import cassette from '../cassette.png';
+import Cassette from './Cassette'
 
 class Box extends Component {
     constructor() {
@@ -28,7 +28,10 @@ class Box extends Component {
 
                     <div className="side-cassette">
                         <h4 style={{ color: this.props.data.vibrant }}>RECENT</h4>
-                        <img src={cassette} alt="" />
+                        <Cassette
+                            data={this.props.data}
+                            isPlaying={this.props.isPlaying}
+                        />
                     </div>
 
                     <div className="recent-tracks2">
@@ -92,7 +95,10 @@ class Box extends Component {
                         <h3 style={{ color: this.props.data.lightVibrant, transition: '1s' }} >第巻壱</h3>
                         <div className="bottom-cassette">
                             <h4 style={{ color: this.props.data.vibrant }}>TRK - 001</h4>
-                            <img src={cassette} alt="" />
+                            <Cassette
+                                data={this.props.data}
+                                isPlaying={this.props.isPlaying}
+                            />
                         </div>
                     </div>
                 </div>
