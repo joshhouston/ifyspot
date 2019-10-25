@@ -264,6 +264,11 @@ li {
   transform: rotate(180deg);
 }
 
+svg {
+  max-height: "100%";
+	max-width: "100%";
+}
+
 @-webkit-keyframes rotating /* Safari and Chrome */ {
   from {
     -webkit-transform: rotate(0deg);
@@ -333,17 +338,18 @@ li {
 
 
   @media screen and (max-width: 1024px){
+    
     .palette {
       display: flex;
       flex-direction: column;
       flex-wrap: nowrap;
-     
+      height: 100%;
       justify-content: flex-start;
     }
   
     .section {
       width: 100%;
-      height: 100vw;
+      height: 80%;
     }
 
     .song-name h2 {
@@ -364,6 +370,12 @@ li {
       font-size: 2vw;
     }
     
+  }
+
+  @media screen and (max-width: 460px){
+    .App {
+      height: 100vh;
+    }
   }
 
 

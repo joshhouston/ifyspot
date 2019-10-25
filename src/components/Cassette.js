@@ -3,8 +3,7 @@ import React, {Component} from 'react'
 class Cassette extends Component {
     render(){
         return (
-            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"
-	 width="100%"  viewBox="-1360.836 -1079.029 3441.344 2226.868"
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px"   viewBox="-1360.836 -1079.029 3441.344 2226.868"
 	 enable-background="new -1360.836 -1079.029 3441.344 2226.868" >
 <g id="svg_copy">
 	<g id="svgg_1_">
