@@ -137,8 +137,8 @@ class App extends Component {
                     <h2>Welcome to Color Spot!</h2>
                       <h3>Couple of things to note:</h3>
                     <ul className='welcome-list'>
-                      <li>Make sure you are already playing music before you click Login</li>
-                      <li>This is just a controller, so unfortunately you can not play music through this app</li>
+                      <li id='important' >Make sure you are already playing music before you click Login</li>
+					  <li>Must have Spotify Premium</li>
                       <li>When you log in, you are granted a token. This token only lasts for 1 hour. <br></br>After this token expires, you must login again to obtain a new token</li>
                     </ul>
                     <h2>Enjoy!</h2>
@@ -168,7 +168,6 @@ class App extends Component {
                     <div className='controls'>
                       <div className='control-color' style={{ color: data.lightVibrant, fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
                         <h4>{this.state.name}</h4>
-                        {/* <img src={cassette} alt="" /> */}
 						<Cassette 
 							data={data}
 							isPlaying={this.state.isPlaying}
