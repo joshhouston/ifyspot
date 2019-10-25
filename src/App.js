@@ -11,7 +11,7 @@ const spotifyWebApi = new Spotify();
 
 export const authEndpoint = 'https://accounts.spotify.com/authorize';
 const clientId = '1685b77ad23941e9a3ab8c1ecde63bf0';
-const redirectUri = 'https://colorspot.art/';
+const redirectUri = 'https://colorspot.art';
 const scopes = [
   "user-read-private",
   "user-read-email",
@@ -166,7 +166,7 @@ class App extends Component {
                   <div className="cassette">
 
                     <div className='controls'>
-                      <div style={{ color: data.lightVibrant, fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
+                      <div className='control-color' style={{ color: data.lightVibrant, fontSize: '4vw', fontWeight: '400', textAlign: 'center' }}>
                         <h4>{this.state.name}</h4>
                         {/* <img src={cassette} alt="" /> */}
 						<Cassette 
@@ -179,20 +179,23 @@ class App extends Component {
 
                         <FontAwesomeIcon
                           style={{ color: data.vibrant }}
-                          size='4x'
+						  size='4x'
+						  className='icons'
                           icon={faBackward}
                           onClick={() => this.previousTrack()}
                         />
                         {(this.state.isPlaying)
                           ? <FontAwesomeIcon
                             style={{ color: data.vibrant }}
-                            size='4x'
+							size='4x'
+							className='icons'
                             icon={faPause}
                             onClick={() => this.pauseTrack()}
                           />
                           : <FontAwesomeIcon
                             style={{ color: data.vibrant }}
-                            size='4x'
+							size='4x'
+							className='icons'
                             icon={faPlay}
                             onClick={() => this.playTrack()}
                           />
@@ -201,7 +204,8 @@ class App extends Component {
 
                         <FontAwesomeIcon
                           style={{ color: data.vibrant }}
-                          size='4x'
+						  size='4x'
+						  className='icons'
                           icon={faForward}
                           onClick={() => this.nextTrack()}
                         />
