@@ -6,13 +6,13 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
     "@fortawesome/react-fontawesome": "^0.1.5",
-    "colorthief": "^2.3.0",
+    "colorthief": "^2.6.0",
     "oridomi": "^1.1.2",
     "react": "^16.9.0",
     "react-dom": "^16.9.0",
     "react-fontawesome": "^1.6.1",
     "react-palette": "^1.0.1",
-    "react-scripts": "3.1.2",
+    "react-scripts": "5.0.1",
     "spotify-web-api-js": "^1.2.0"
   },
   "scripts": {
